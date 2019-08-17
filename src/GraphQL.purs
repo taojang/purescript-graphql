@@ -2,17 +2,17 @@ module GraphQL
        ( graphql
        ) where
 
-import Data.Argonaut.Core (Json)
 import Data.Function.Uncurried (Fn6, runFn6)
 import Data.Maybe (Maybe)
 import Data.Nullable (Nullable, toNullable)
 import Effect.Aff (Aff)
 import Effect.Aff.Compat (EffectFnAff, fromEffectFnAff)
+import Foreign (Foreign)
 import GraphQL.Type (Schema)
 import Prelude (($))
 
 graphql :: ∀ a b.
-  Schema a b -> String -> b -> a -> Maybe Json -> Maybe String -> Aff Json
+  Schema a b -> String -> b -> a -> Maybe Foreign -> Maybe String -> Aff Foreign
 graphql schema query root context variables operationName =
     fromEffectFnAff $ runFn6 _graphql schema query root context nVariables nOperation
       where
@@ -20,4 +20,4 @@ graphql schema query root context variables operationName =
         nOperation = toNullable operationName
 
 foreign import _graphql :: ∀ a b.
-  Fn6 (Schema a b) String b a (Nullable Json) (Nullable String) (EffectFnAff Json)
+  Fn6 (Schema a b) String b a (Nullable Foreign) (Nullable String) (EffectFnAff Foreign)
