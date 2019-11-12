@@ -68,7 +68,7 @@ exports._field = function(toNullable, toMaybe) {
       return toMaybe(transformArgs(arg, type.getFields()));
     } else if (G.isListType(type)) {
       return toMaybe(
-        value.map(function(value) {
+        arg.map(function(value) {
           return transformArg(value, type.ofType);
         })
       );
